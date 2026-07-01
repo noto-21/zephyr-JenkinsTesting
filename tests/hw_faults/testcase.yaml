@@ -1,0 +1,3 @@
+tests:
+  simulation.i2c_hardware_fault:
+    tags: fault_injection i2c
