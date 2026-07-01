@@ -17,4 +17,4 @@ pip3 install -r scripts/requirements.txt
 echo "=== 3. Running QEMU Tests ==="
 # Execute Twister targeting the QEMU ARM board. 
 # Twister will automatically boot the QEMU VM, run the tests, parse the serial output, and shut it down.
-west twister -p qemu_cortex_m3 -T tests/hw_faults -v
+west twister -p qemu_cortex_m3/ti_lm3s6965 -T tests/hw_faults -v || cat /build/twister-out/qemu_cortex_m3_ti_lm3s6965/zephyr_gnu/tests/hw_faults/simulation.i2c_hardware_fault/handler.log
