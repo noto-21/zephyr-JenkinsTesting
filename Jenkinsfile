@@ -2,7 +2,7 @@ pipeline {
     agent any 
     
     options {
-        timeout(time: 3, unit: 'HOURS')
+        // timeout(time: 4, unit: 'HOURS')
         buildDiscarder(logRotator(numToKeepStr: '10'))
         timestamps()
     }
@@ -24,6 +24,10 @@ pipeline {
         }
 
         stage('Execute Containerized Tests') {
+            // options {
+            //     timeout(time: 4, unit: 'HOURS')
+            // }
+
             steps {
                 echo 'Spawning Zephyr CI environment and running QEMU tests...'
                 
