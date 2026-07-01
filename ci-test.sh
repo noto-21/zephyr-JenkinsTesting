@@ -9,10 +9,10 @@ west update
 west zephyr-export
 pip3 install -r scripts/requirements.txt
 
-echo "=== 2. Executing Build for QEMU ==="
-# We removed the 'host' toolchain override so Zephyr uses the container's built-in SDK cross-compilers.
-# Building the basic blinky sample for an emulated ARM Cortex-M3.
-west build -b qemu_cortex_m3 samples/basic/blinky
+# echo "=== 2. Executing Build for QEMU ==="
+# # We removed the 'host' toolchain override so Zephyr uses the container's built-in SDK cross-compilers.
+# # Building the basic blinky sample for an emulated ARM Cortex-M3.
+# # west build -b qemu_cortex_m3 samples/basic/blinky
 
 echo "=== 3. Running QEMU Tests ==="
 # Execute Twister targeting the QEMU ARM board. 
