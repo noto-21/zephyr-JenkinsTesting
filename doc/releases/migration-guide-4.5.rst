@@ -278,6 +278,15 @@ Ethernet
   error will be logged. This check is done before the ``start`` function of the
   :c:struct:`ethernet_api` is called. This also applies to native wifi drivers. (:github:`110435`)
 
+* The Xilinx GEM Ethernet driver (:dtcompatible:`xlnx,gem`) has been switched over to use the
+  current MDIO and PHY facilities, splitting up the driver's implementation into separate
+  MDIO and Ethernet MAC drivers. The driver's custom PHY management code has been removed.
+  The types of Ethernet PHYs supported by the removed custom code, the Marvell Alaska GBit
+  PHY family and the TI TLK105/DP83822 100 MBit PHYs are both covered by the standard
+  (:dtcompatible:`ethernet-phy`) driver. The QEMU targets which emulate the Xilinx GEM have
+  been updated accordingly, as have been the device trees of the Zynq-7000 and ZynqMP /
+  UltraScale+ SoC families. (:github:`87313`)
+
 Flash
 =====
 * :dtcompatible:`jedec,spi-nand` now requires a ``plane-bytes`` property, which indicates the size
@@ -364,6 +373,9 @@ Interrupt Controllers
   ``DT_INST_IRQ(n, sense)`` or ``DT_IRQ(node, sense)`` should be updated to use ``flags`` instead
   of ``sense``.
 
+* Deprecate ``GIC_NUM_CPU_IF`` from GIC header file :file:`gic.h`. One shall use
+  instead.:kconfig:option:`CONFIG_MP_MAX_NUM_CPUS` instead.
+
 NXP
 ===
 
@@ -398,6 +410,11 @@ RTC
   :dtcompatible:`maxim,ds3231-rtc` child. Move ``isw-gpios`` to the RTC child, rename old
   ``32k-gpios`` usage to ``freq-32khz-gpios``, and replace ``maxim_ds3231_*`` helper API usage with
   generic RTC subsystem APIs.
+
+* :dtcompatible:`microcrystal,rv3032` properties ``trickle-resistor-ohms`` and
+  ``trickle-charger-mode`` have moved to the parent
+  :dtcompatible:`microcrystal,rv3032-mfd` device. The parent MFD device now
+  handles configuring the backup supply mode for all child devices.
 
 SD Host Controller
 ==================
@@ -505,6 +522,9 @@ STM32
   to declare and configure XSPI Manager. Boards making use of XSPI must now enable
   ``&xspim`` node in addition to the desired XSPI controller to use XSPI. (:github:`109903`)
 
+* STM32MP13 SoC DTSI ethernet: rename labels from ``mac:`` and ``mdio:`` to ``mac0:`` and
+  ``mdio0:``. The goal is to distinguish the 2 Ethernet controllers available. (:github:`108574`)
+
 Syscon
 ======
 
@@ -591,6 +611,21 @@ Bluetooth Audio
     :c:struct:`bt_bap_broadcast_source_subgroup_param`, then the parameter's pointer cannot be used
     to modify the ``codec_cfg``, and the actual definition of the struct should be modified instead.
     (:github:`104219`)
+  * All BAP roles now require :kconfig:option:`CONFIG_BT_AUDIO_CODEC_CFG_MAX_DATA_SIZE` to be at least
+    19 octets, as mandated by the BAP spec.
+    If :kconfig:option:`CONFIG_BT_AUDIO_CODEC_CFG_MAX_DATA_SIZE` is set to a lower value when used
+    with BAP, then applications need to set it to at least 19 octets. The following Kconfig options
+    are affected:
+
+    * :kconfig:option:`CONFIG_BT_ASCS`
+    * :kconfig:option:`CONFIG_BT_BAP_UNICAST_SERVER`
+    * :kconfig:option:`CONFIG_BT_BAP_UNICAST_CLIENT`
+    * :kconfig:option:`CONFIG_BT_BAP_BROADCAST_SOURCE`
+    * :kconfig:option:`CONFIG_BT_BAP_BROADCAST_SINK`
+    * :kconfig:option:`CONFIG_BT_BAP_SCAN_DELEGATOR`
+    * :kconfig:option:`CONFIG_BT_BAP_BROADCAST_ASSISTANT`
+
+    (:github:`107989`)
 
 * CAP
 
@@ -858,6 +893,15 @@ Random
 
 * ``CONFIG_CS_CTR_DRBG_PERSONALIZATION`` has been removed. It did not have any effect.
 
+Tools
+*****
+
+* The ``openocd`` runner now selects a debug adapter by serial number through the
+  canonical ``-i``/``--dev-id`` option, like the other runners. The previous
+  ``--serial`` option is deprecated and kept as an alias; it maps onto the same
+  mechanism (the value is still passed to the OpenOCD config as
+  ``_ZEPHYR_BOARD_SERIAL``). Update any scripts to use ``west flash -i <serial>``.
+
 Modules
 *******
 
@@ -909,3 +953,6 @@ Architectures
 
 * ``CONFIG_XTENSA_MPU_DEFAULT_MEM_TYPE`` is removed since memory types are now defined via
   ``xtensa_mpu_mem_type_ranges[]``.
+
+* ``CONFIG_XTENSA_BACKTRACE_EXCEPTION_DUMP_HOOK`` is removed, since backtrace is now always
+  using :c:macro:`EXCEPTION_DUMP` for output.

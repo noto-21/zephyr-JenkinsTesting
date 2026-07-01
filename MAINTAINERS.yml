@@ -1080,13 +1080,13 @@ Cache:
     - include/zephyr/cache.h
     - doc/hardware/cache/index.rst
     - drivers/cache/
-    - tests/kernel/cache/
+    - tests/arch/common/cache/
     - doc/hardware/cache/
     - dts/bindings/cache/
   labels:
     - "area: Cache"
   tests:
-    - kernel.cache
+    - arch.cache
 
 Coding Guidelines:
   status: maintained
@@ -1606,6 +1606,22 @@ Documentation Infrastructure:
   tests:
     - drivers.charger
     - sample.drivers.charger
+
+"Drivers: Clock Monitor":
+  status: maintained
+  maintainers:
+    - FelixWang47831
+  files:
+    - drivers/clock_monitor/
+    - dts/bindings/clock-monitor/
+    - include/zephyr/drivers/clock_monitor.h
+    - tests/drivers/clock_monitor/
+    - doc/hardware/peripherals/clock_monitor.rst
+    - samples/drivers/clock_monitor/
+  labels:
+    - "area: Clock Monitor"
+  tests:
+    - drivers.clock_monitor
 
 "Drivers: Clock control":
   status: maintained
