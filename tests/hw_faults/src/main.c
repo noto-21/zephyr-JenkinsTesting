@@ -5,13 +5,13 @@
 /* * 1. OVERRIDE THE DEFAULT KERNEL PANIC HANDLER
  * When the ARM CPU HardFaults, it jumps here instead of locking up.
  */
-void k_sys_fatal_error_handler(unsigned int reason, const struct arch_esf *esf) {
-    printk("Intercepted the expected hardware fault!\n");
-    printk("The CPU successfully protected itself. Passing the test.\n");
+// void k_sys_fatal_error_handler(unsigned int reason, const struct arch_esf *esf) {
+//     printk("Intercepted the expected hardware fault!\n");
+//     printk("The CPU successfully protected itself. Passing the test.\n");
     
-    // Tell Twister the test succeeded
-    ztest_test_pass(); 
-}
+//     // Tell Twister the test succeeded
+//     ztest_test_pass(); 
+// }
 
 /*
  * 2. THE TEST CASE
