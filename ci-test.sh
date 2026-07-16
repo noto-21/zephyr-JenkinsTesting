@@ -31,7 +31,7 @@ if [ $TWISTER_EXIT_CODE -ne 0 ]; then
         echo "Invoking ESOps LLaMA Fault Detection Engine..."
         # Make sure dependencies like 'requests' are available in the container
         pip3 install requests --quiet
-        python3 /build/esops_analyzer.py "$LOG_PATH"
+        python3 /build/esops_analyzer.py "$LOG_PATH" "Zephyr"
     else
         echo "No hardware handler log found to analyze."
     fi
